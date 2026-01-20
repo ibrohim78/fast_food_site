@@ -1,0 +1,172 @@
+<!-- templates/restaurant/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Bosh sahifa - Fast Food Restorani{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5 mb-5 rounded">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold mb-4">Mazali va Tez Fast Food</h1>
+                <p class="lead mb-4">
+                    O'zbekistonning eng yaxshi fast food restoranida 
+                    mazali taomlardan bahramand bo'ling.
+                </p>
+                <div class="mt-4">
+                    <a href="{% url 'restaurant:menu' %}" class="btn btn-warning btn-lg me-2">
+                        <i class="fas fa-utensils"></i> Menyuni ko'rish
+                    </a>
+                    <a href="{% url 'restaurant:order' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-shopping-cart"></i> Hoziroq buyurtma
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <i class="fas fa-hamburger fa-10x text-warning"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nega bizni tanlashadi?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Tez yetkazib berish</h4>
+                        <p class="card-text">
+                            30 daqiqa ichida manzilingizga yetkazib beramiz.
+                            Bepul yetkazib berish 50,000 so'mdan ortiq buyurtmalar uchun.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-award fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Yuqori sifat</h4>
+                        <p class="card-text">
+                            Faqat eng yaxshi ingredientlardan foydalanamiz.
+                            Barcha taomlar restoranda tayyorlanadi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Qulay to'lov</h4>
+                        <p class="card-text">
+                            Naqd, bank kartasi yoki onlayn to'lov.
+                            Barcha turdagi to'lov usullarini qabul qilamiz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Products -->
+<section class="products-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Mashhur taomlar</h2>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top" alt="Burger" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Big Burger</h5>
+                        <p class="card-text">Mazali go'sht va yangi sabzavotlar bilan tayyorlangan.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 text-primary">35,000 so'm</span>
+                            <button class="btn btn-success btn-sm">
+                                <i class="fas fa-cart-plus"></i> Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top" alt="Pizza" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Pizza Margarita</h5>
+                        <p class="card-text">Italyan uslubidagi klassik pizza.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 text-primary">55,000 so'm</span>
+                            <button class="btn btn-success btn-sm">
+                                <i class="fas fa-cart-plus"></i> Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top" alt="Pizza" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Pepperoni Pizza</h5>
+                        <p class="card-text">Pepperoni va pishloq bilan tayyorlangan.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 text-primary">65,000 so'm</span>
+                            <button class="btn btn-success btn-sm">
+                                <i class="fas fa-cart-plus"></i> Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top" alt="Salad" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Salad Bar</h5>
+                        <p class="card-text">Yangi sabzavotlar bilan tayyorlangan salat.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 text-primary">25,000 so'm</span>
+                            <button class="btn btn-success btn-sm">
+                                <i class="fas fa-cart-plus"></i> Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'restaurant:menu' %}" class="btn btn-primary btn-lg">
+                Barcha taomlarni ko'rish <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5 bg-warning">
+    <div class="container text-center">
+        <h2 class="mb-4">Stolingizni bron qiling!</h2>
+        <p class="lead mb-4">
+            Navbat kutmasdan, stolingizni oldindan band qiling va rahat ovqatlaning.
+        </p>
+        <a href="{% url 'restaurant:reservation' %}" class="btn btn-dark btn-lg">
+            <i class="fas fa-calendar-alt"></i> Bron qilish
+        </a>
+    </div>
+</section>
+{% endblock %}

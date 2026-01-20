@@ -1,0 +1,474 @@
+{% extends 'base.html' %}
+
+{% block title %}Biz haqimizda - Fast Food Restorani{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-about {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                    url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+    
+    .stat-card {
+        text-align: center;
+        padding: 30px;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        height: 100%;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .stat-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #0d6efd;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #0d6efd;
+        line-height: 1;
+    }
+    
+    .team-card {
+        border: none;
+        transition: transform 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .team-img {
+        height: 250px;
+        object-fit: cover;
+        border-bottom: 3px solid #0d6efd;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #0d6efd;
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 30px;
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -35px;
+        top: 5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #0d6efd;
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px #0d6efd;
+    }
+    
+    .timeline-date {
+        color: #0d6efd;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .value-card {
+        padding: 30px;
+        border-radius: 10px;
+        height: 100%;
+        transition: transform 0.3s ease;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    
+    .value-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .value-icon {
+        font-size: 2.5rem;
+        color: #0d6efd;
+        margin-bottom: 20px;
+    }
+    
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        height: 250px;
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    .gallery-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 15px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+        transform: translateY(0);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-about">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Biz haqimizda</h1>
+        <p class="lead mb-4">Fast Food Restorani - O'zbekistonning eng yaxshi fast food tarmog'i</p>
+        <a href="#our-story" class="btn btn-warning btn-lg">Bizning tariximiz</a>
+    </div>
+</section>
+
+<!-- Statistics -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-number">5+</div>
+                    <h5>Yillik tajriba</h5>
+                    <p class="text-muted mb-0">2018-yildan beri xizmat ko'rsatmoqda</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="stat-number">15+</div>
+                    <h5>Filiallar</h5>
+                    <p class="text-muted mb-0">O'zbekiston bo'ylab filiallar</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">50k+</div>
+                    <h5>Mamnun mijozlar</h5>
+                    <p class="text-muted mb-0">Har oyda 50,000 dan ortiq mijoz</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="stat-number">10+</div>
+                    <h5>Mukofotlar</h5>
+                    <p class="text-muted mb-0">Milliy va xalqaro mukofotlar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Story -->
+<section class="py-5" id="our-story">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4">
+                <h2 class="mb-4">Bizning tariximiz</h2>
+                <p class="lead">
+                    2018-yilda kichik bir burger do'koni sifatida boshlangan Fast Food Restorani 
+                    bugungi kunda O'zbekistonning eng yirik fast food tarmog'iga aylandi.
+                </p>
+                <p>
+                    Bizning maqsadimiz - mijozlarga sifatli, tez va arzon fast food xizmatini 
+                    taqdim etish. Har bir burger, har bir pizza maxsus retsept bo'yicha 
+                    tayyorlanadi va faqat eng yaxshi ingredientlardan foydalanamiz.
+                </p>
+                <p>
+                    Bugungi kunda biz 15 dan ortiq filiallarimiz va 100 dan ortiq xodimlarimiz 
+                    bilan O'zbekistonning barcha yirik shaharlarida xizmat ko'rsatmoqdamiz.
+                </p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                     alt="Bizning restoran" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Bizning yo'limiz</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2018 yil</div>
+                <h5>Birinchilik</h5>
+                <p>Toshkent shahrida birinchi Fast Food Restoran ochildi. 
+                Kichik do'kon katta muvaffaqiyat qozondi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2019 yil</div>
+                <h5>Kengayish boshlanishi</h5>
+                <p>3 ta yangi filial ochildi va onlayn buyurtma tizimi ishga tushirildi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2020 yil</div>
+                <h5>Innovatsiyalar</h5>
+                <p>Mobil ilova chiqarildi va yetkazib berish xizmati kengaytirildi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2021 yil</div>
+                <h5>Mintaqaviy kengayish</h5>
+                <p>Samarqand va Buxoroda birinchi filiallar ochildi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2023 yil</div>
+                <h5>15+ filial</h5>
+                <p>O'zbekiston bo'ylab 15 dan ortiq filiallar tarmog'i yaratildi.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Bizning qadriyatlarimiz</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Sifat</h4>
+                    <p class="text-muted">
+                        Biz faqat eng yaxshi ingredientlardan foydalanamiz. 
+                        Har bir taom maxsus e'tibor bilan tayyorlanadi.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h4>Tezkorlik</h4>
+                    <p class="text-muted">
+                        30 daqiqa ichida yetkazib berish. 
+                        Restoranda navbat kutish yo'q - onlayn bron qilish mumkin.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Mijozlar</h4>
+                    <p class="text-muted">
+                        Har bir mijoz biz uchun muhim. 
+                        Doimiy ravishda mijozlar fikr-mulohazalarini tinglaymiz.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>Ekologik toza</h4>
+                    <p class="text-muted">
+                        Ekologik toza mahsulotlardan foydalanamiz. 
+                        Qadoqlash materiallari biologik parchalanuvchi.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4>Ishonchlilik</h4>
+                    <p class="text-muted">
+                        Bizning va'dalarimiz - muqaddas. 
+                        Har bir buyurtma va'da qilingan vaqtda yetkaziladi.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>Innovatsiya</h4>
+                    <p class="text-muted">
+                        Doimiy ravishda yangi texnologiyalar va 
+                        retseptlarni o'rganamiz va joriy etamiz.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Bizning jamoamiz</h2>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card team-card">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top team-img" alt="Asadbek Karimov">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Asadbek Karimov</h5>
+                        <p class="card-text text-muted">Bosh direktor</p>
+                        <p class="card-text small">5+ yillik tajriba</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card team-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top team-img" alt="Dilnoza Ismoilova">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Dilnoza Ismoilova</h5>
+                        <p class="card-text text-muted">Bosh oshpaz</p>
+                        <p class="card-text small">Retseptlar muallifi</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card team-card">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top team-img" alt="Javohir Toshpulatov">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Javohir Toshpulatov</h5>
+                        <p class="card-text text-muted">Marketing menejeri</p>
+                        <p class="card-text small">Strategiya va reklama</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card team-card">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         class="card-img-top team-img" alt="Gulbahor Yusupova">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Gulbahor Yusupova</h5>
+                        <p class="card-text text-muted">Mijozlar xizmati menejeri</p>
+                        <p class="card-text small">24/7 mijozlar qo'llab-quvvatlash</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Bizning restoranlarimiz</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         alt="Restoran interyeri">
+                    <div class="gallery-overlay">
+                        <h6 class="mb-0">Zamonaviy interyer</h6>
+                        <small>Qulay va zamonaviy dizayn</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1554679665-f5537f187268?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         alt="Oshxona">
+                    <div class="gallery-overlay">
+                        <h6 class="mb-0">Toza oshxona</h6>
+                        <small>Yuqori standartlarda tozalik</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         alt="Jamoa">
+                    <div class="gallery-overlay">
+                        <h6 class="mb-0">Professional jamoa</h6>
+                        <small>Malakali xodimlar</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Bizning oilamizga qo'shiling!</h2>
+        <p class="lead mb-4">Siz ham Fast Food Restorani oilasiga qo'shila olasiz</p>
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'restaurant:contact' %}" class="btn btn-light btn-lg w-100">
+                    <i class="fas fa-briefcase"></i> Ishga qabul
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'restaurant:contact' %}" class="btn btn-outline-light btn-lg w-100">
+                    <i class="fas fa-handshake"></i> Hamkorlik
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'restaurant:menu' %}" class="btn btn-warning btn-lg w-100">
+                    <i class="fas fa-utensils"></i> Menyuni ko'rish
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

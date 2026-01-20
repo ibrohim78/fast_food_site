@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}Savat - Fast Food Restorani{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">
+        <i class="fas fa-shopping-cart"></i> Savatingiz
+    </h1>
+    
+    {% if cart_items %}
+    <div class="row">
+        <!-- Mahsulotlar ro'yxati -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Savatdagi mahsulotlar</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mahsulot</th>
+                                    <th>Narxi</th>
+                                    <th>Miqdori</th>
+                                    <th>Jami</th>
+                                    <th>Harakatlar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+                                                 alt="{{ item.name }}" 
+                                                 class="img-thumbnail me-3" 
+                                                 style="width: 60px; height: 60px; object-fit: cover;">
+                                            <div>
+                                                <h6 class="mb-0">{{ item.name }}</h6>
+                                                <small class="text-muted">Burger</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ item.price|floatformat:0 }} so'm</td>
+                                    <td>
+                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                            <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
+                                            <input type="text" class="form-control text-center quantity-input" 
+                                                   value="{{ item.quantity }}" readonly>
+                                            <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
+                                        </div>
+                                    </td>
+                                    <td>{{ item.total|floatformat:0 }} so'm</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm remove-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Davom etish tugmalari -->
+            <div class="d-flex justify-content-between mb-4">
+                <a href="{% url 'restaurant:menu' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Menyuga qaytish
+                </a>
+                <button class="btn btn-danger" id="clear-cart-btn">
+                    <i class="fas fa-trash"></i> Savatni tozalash
+                </button>
+            </div>
+        </div>
+        
+        <!-- Xisob-kitob -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Buyurtma xulosasi</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Mahsulotlar:</span>
+                        <span>{{ subtotal|floatformat:0 }} so'm</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Yetkazib berish:</span>
+                        <span>
+                            {% if subtotal > 50000 %}
+                            <span class="text-success">BEPUL</span>
+                            {% else %}
+                            15,000 so'm
+                            {% endif %}
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Jami:</strong>
+                        <strong class="text-primary">
+                            {% if subtotal > 50000 %}
+                            {{ subtotal|floatformat:0 }}
+                            {% else %}
+                            {{ subtotal|add:15000|floatformat:0 }}
+                            {% endif %} so'm
+                        </strong>
+                    </div>
+                    
+                    <div class="alert alert-info">
+    <small>
+        <i class="fas fa-info-circle"></i>
+        {% if subtotal > 50000 %}
+        <strong>50,000 so'mdan ortiq buyurtmalar uchun yetkazib berish BEPUL!</strong>
+        {% else %}
+        {% with remaining=50000 %}
+            {% with need=remaining|add:0 %}
+                Yetkazib berishni bepul olish uchun {{ need }} so'mga yana mahsulot qo'shing.
+            {% endwith %}
+        {% endwith %}
+        {% endif %}
+    </small>
+</div>
+                    
+                    <a href="{% url 'restaurant:order' %}" class="btn btn-success btn-lg w-100">
+                        <i class="fas fa-shopping-cart"></i> Buyurtma berish
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Maxsus takliflar -->
+            <div class="card mt-4">
+                <div class="card-header bg-warning">
+                    <h6 class="mb-0">
+                        <i class="fas fa-gift"></i> Maxsus takliflar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success mb-2">
+                        <small>
+                            <i class="fas fa-tag"></i>
+                            <strong>2 ta burger + Coca-Cola = 60,000 so'm</strong><br>
+                            (oddiy narxda: 70,000 so'm)
+                        </small>
+                    </div>
+                    <div class="alert alert-success mb-0">
+                        <small>
+                            <i class="fas fa-tag"></i>
+                            <strong>3 ta pizza = 140,000 so'm</strong><br>
+                            (oddiy narxda: 165,000 so'm)
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Bo'sh savat -->
+    <div class="text-center py-5">
+        <i class="fas fa-shopping-cart fa-5x text-muted mb-4"></i>
+        <h3 class="text-muted mb-3">Savat bo'sh</h3>
+        <p class="text-muted mb-4">Siz hali hech qanday mahsulot qo'shmagansiz</p>
+        <a href="{% url 'restaurant:menu' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-utensils"></i> Menyuga o'tish
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .quantity-input {
+        max-width: 50px;
+    }
+    
+    .table th {
+        font-weight: 600;
+        border-top: none;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+</style>
+
+<script>
+    // Quantity o'zgartirish
+    document.querySelectorAll('.plus-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.quantity-input');
+            let value = parseInt(input.value);
+            input.value = value + 1;
+            updateTotal();
+        });
+    });
+    
+    document.querySelectorAll('.minus-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.quantity-input');
+            let value = parseInt(input.value);
+            if (value > 1) {
+                input.value = value - 1;
+                updateTotal();
+            }
+        });
+    });
+    
+    // O'chirish tugmasi
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const row = this.closest('tr');
+            if (confirm('Bu mahsulotni savatdan o\'chirishni istaysizmi?')) {
+                row.style.opacity = '0.5';
+                setTimeout(() => {
+                    row.remove();
+                    updateTotal();
+                    checkEmptyCart();
+                }, 300);
+            }
+        });
+    });
+    
+    // Savatni tozalash
+    document.getElementById('clear-cart-btn')?.addEventListener('click', function() {
+        if (confirm('Barcha mahsulotlarni savatdan o\'chirishni istaysizmi?')) {
+            document.querySelector('tbody').innerHTML = '';
+            checkEmptyCart();
+        }
+    });
+    
+    // Jami summani yangilash
+    function updateTotal() {
+        // Bu yerda haqiqiy hisob-kitob JavaScript orqali amalga oshirilishi mumkin
+        console.log('Total updated');
+    }
+    
+    // Bo'sh savatni tekshirish
+    function checkEmptyCart() {
+        const rows = document.querySelectorAll('tbody tr');
+        if (rows.length === 0) {
+            // Agar savat bo'sh bo'lsa, sahifani qayta yuklash
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
+    }
+    
+    // Sahifa yuklanganda
+    document.addEventListener('DOMContentLoaded', function() {
+        // Test uchun ma'lumotlar
+        const subtotal = 85000;
+        const delivery = subtotal > 50000 ? 0 : 15000;
+        const total = subtotal + delivery;
+        
+        // Agar kerak bo'lsa, DOM ni yangilash
+    });
+</script>
+{% endblock %}

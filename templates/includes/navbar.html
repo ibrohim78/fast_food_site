@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant:home' %}">
+                        <i class="fas fa-home"></i> Bosh sahifa
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant:menu' %}">
+                        <i class="fas fa-utensils"></i> Menyu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant:order' %}">
+                        <i class="fas fa-shopping-cart"></i> Buyurtma berish
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant:reservation' %}">
+                        <i class="fas fa-calendar-alt"></i> Stol bron qilish
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant:about' %}">
+                        <i class="fas fa-info-circle"></i> Biz haqimizda
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant:contact' %}">
+                        <i class="fas fa-envelope"></i> Aloqa
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="d-flex">
+                <a href="{% url 'restaurant:cart' %}" class="btn btn-warning position-relative">
+                    <i class="fas fa-shopping-cart"></i> Savat
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ cart_count }}
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

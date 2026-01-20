@@ -1,0 +1,534 @@
+{% extends 'base.html' %}
+
+{% block title %}Aloqa - Fast Food Restorani{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+    
+    .contact-card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        height: 100%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    
+    .contact-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .contact-icon {
+        font-size: 3rem;
+        color: #0d6efd;
+        margin-bottom: 20px;
+    }
+    
+    .contact-form {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 40px;
+    }
+    
+    .map-container {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        height: 100%;
+    }
+    
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
+    .opening-hours {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 30px;
+    }
+    
+    .hour-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .hour-item:last-child {
+        border-bottom: none;
+    }
+    
+    .social-contact {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .social-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .social-link:hover {
+        transform: translateY(-5px);
+    }
+    
+    .telegram { background-color: #0088cc; }
+    .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .facebook { background-color: #1877f2; }
+    .youtube { background-color: #ff0000; }
+    
+    .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 25px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+    }
+    
+    .contact-info-item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .info-icon {
+        font-size: 2rem;
+        color: #0d6efd;
+        margin-right: 20px;
+        min-width: 50px;
+        text-align: center;
+    }
+    
+    .faq-item {
+        margin-bottom: 15px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .faq-question {
+        padding: 20px;
+        background: #f8f9fa;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+    }
+    
+    .faq-answer {
+        padding: 20px;
+        background: white;
+        display: none;
+    }
+    
+    .faq-item.active .faq-answer {
+        display: block;
+    }
+    
+    .faq-item.active .faq-question {
+        background: #0d6efd;
+        color: white;
+    }
+    
+    .faq-toggle {
+        transition: transform 0.3s ease;
+    }
+    
+    .faq-item.active .faq-toggle {
+        transform: rotate(180deg);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="contact-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Biz bilan bog'laning</h1>
+        <p class="lead mb-4">Savollaringiz bo'lsa, bizga murojaat qiling. 24/7 sizning xizmatingizdamiz</p>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="contact-info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h5>Manzil</h5>
+                        <p class="mb-1"><strong>Asosiy ofis:</strong></p>
+                        <p class="text-muted mb-0">
+                            Toshkent shahar, Yunusobod tumani,<br>
+                            Amir Temur ko'chasi, 45-uy
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="contact-info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h5>Telefon raqamlar</h5>
+                        <p class="mb-1"><strong>Umumiy ma'lumot:</strong></p>
+                        <p class="text-muted mb-1">
+                            <a href="tel:+998901234567" class="text-decoration-none">+998 90 123 45 67</a>
+                        </p>
+                        <p class="mb-1"><strong>Buyurtmalar:</strong></p>
+                        <p class="text-muted mb-0">
+                            <a href="tel:+998901234568" class="text-decoration-none">+998 90 123 45 68</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="contact-info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h5>Elektron pochta</h5>
+                        <p class="mb-1"><strong>Mijozlar uchun:</strong></p>
+                        <p class="text-muted mb-1">
+                            <a href="mailto:info@fastfood.uz" class="text-decoration-none">info@fastfood.uz</a>
+                        </p>
+                        <p class="mb-1"><strong>Hamkorlik uchun:</strong></p>
+                        <p class="text-muted mb-0">
+                            <a href="mailto:partners@fastfood.uz" class="text-decoration-none">partners@fastfood.uz</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form & Map -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-6 mb-4">
+                <div class="contact-form">
+                    <h3 class="mb-4">Xabar yuborish</h3>
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Ismingiz *</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Telefon raqamingiz</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email manzilingiz *</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Mavzu</label>
+                            <select class="form-select" id="subject">
+                                <option value="">Mavzuni tanlang</option>
+                                <option value="order">Buyurtma haqida</option>
+                                <option value="reservation">Bron haqida</option>
+                                <option value="complaint">Shikoyat</option>
+                                <option value="suggestion">Taklif</option>
+                                <option value="job">Ishga qabul</option>
+                                <option value="partnership">Hamkorlik</option>
+                                <option value="other">Boshqa</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Xabaringiz *</label>
+                            <textarea class="form-control" id="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="newsletter">
+                            <label class="form-check-label" for="newsletter">
+                                Yangiliklar va aksiyalar haqida xabardor bo'lishni istayman
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Xabarni yuborish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Map & Information -->
+            <div class="col-lg-6 mb-4">
+                <div class="map-container mb-4">
+                    <!-- Google Map (replace with your actual embed code) -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.768962244646!2d69.27924027646932!3d41.313189071309264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b534175ed31%3A0x52a8f9d9414a2ad8!2sTashkent%2C%20Uzbekistan!5e0!3m2!1sen!2s!4v1645000000000!5m2!1sen!2s" 
+                            allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                
+                <div class="opening-hours">
+                    <h5 class="mb-4">
+                        <i class="fas fa-clock me-2"></i> Ish vaqti
+                    </h5>
+                    <div class="hour-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Dushanba - Juma</span>
+                            <span class="fw-bold">10:00 - 23:00</span>
+                        </div>
+                    </div>
+                    <div class="hour-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Shanba</span>
+                            <span class="fw-bold">10:00 - 00:00</span>
+                        </div>
+                    </div>
+                    <div class="hour-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Yakshanba</span>
+                            <span class="fw-bold">10:00 - 00:00</span>
+                        </div>
+                    </div>
+                    <div class="hour-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Yetkazib berish</span>
+                            <span class="fw-bold">10:00 - 22:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Media -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Bizni ijtimoiy tarmoqlarda kuzating</h2>
+            <p class="text-muted">Eng so'nggi yangiliklar, aksiyalar va takliflarni birinchi bo'lib bilib oling</p>
+        </div>
+        
+        <div class="social-contact">
+            <a href="https://t.me/fastfooduz" target="_blank" class="social-link telegram">
+                <i class="fab fa-telegram"></i>
+            </a>
+            <a href="https://instagram.com/fastfooduz" target="_blank" class="social-link instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/fastfooduz" target="_blank" class="social-link facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://youtube.com/fastfooduz" target="_blank" class="social-link youtube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Ko'p beriladigan savollar</h2>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Buyurtmani qanday bekor qilish mumkin?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mb-0">
+                            Buyurtmani bekor qilish uchun telefon raqamingiz bilan 
+                            bizga qo'ng'iroq qiling (+998 90 123 45 68) yoki buyurtma 
+                            raqamingizni yuboring. Tayyorlanish boshlanganidan keyin 
+                            bekor qilish mumkin emas.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Yetkazib berish qancha vaqt oladi?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mb-0">
+                            Odatda 30 daqiqa ichida yetkazib beramiz. Ish yuki 
+                            yuqori bo'lgan paytlarda (tushlik va kechki ovqat vaqtlari) 
+                            vaqt 45-60 daqiqagacha uzayishi mumkin.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Qanday to'lov usullari mavjud?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mb-0">
+                            Biz quyidagi to'lov usullarini qabul qilamiz:<br>
+                            - Naqd pul<br>
+                            - Bank kartalari (Uzcard, Humo, Visa, Mastercard)<br>
+                            - Onlayn to'lov (Click, Payme, Apelsin)<br>
+                            - Yetkazib beruvchiga naqd pul
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bepul yetkazib berish shartlari qanday?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mb-0">
+                            50,000 so'mdan ortiq buyurtmalar uchun yetkazib berish 
+                            bepul. 50,000 so'mdan kam buyurtmalar uchun yetkazib 
+                            berish narxi 15,000 so'm.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bronni qanday bekor qilish mumkin?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mb-0">
+                            Bronni kamida 1 soat oldin bekor qilish kerak. 
+                            Bron raqamingizni bizga telefon qilgan holda bekor 
+                            qilishingiz mumkin. Kechnomasiz bekor qilingan bronlar 
+                            uchun keyingi bronlarda cheklovlar qo'llanilishi mumkin.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Restoranda to'ylar va tadbirlarni o'tkazish mumkinmi?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mb-0">
+                            Ha, biz maxsus tadbirlar uchun restoran xonalarini 
+                            band qilish imkoniyatini taqdim etamiz. Batafsil 
+                            ma'lumot va narxlarni bilish uchun biz bilan bog'laning.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="#" class="btn btn-outline-primary">
+                <i class="fas fa-question-circle"></i> Barcha savollarni ko'rish
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Emergency Contact -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="mb-4">
+                    <i class="fas fa-exclamation-triangle"></i> Favqulodda holatlar
+                </h2>
+                <p class="lead mb-4">
+                    Agar sizda jiddiy muammo yoki shikoyat bo'lsa, quyidagi raqamga bemalol murojaat qiling
+                </p>
+                <div class="display-4 mb-4">
+                    <a href="tel:+998901111111" class="text-white text-decoration-none">
+                        <i class="fas fa-phone me-3"></i>+998 90 111 11 11
+                    </a>
+                </div>
+                <p class="mb-0">
+                    24 soat xizmat ko'rsatish liniyasi<br>
+                    <small>Shikoyatlar, favqulodda holatlar, sug'urta masalalari</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // FAQ toggle
+    function toggleFaq(element) {
+        const faqItem = element.parentElement;
+        faqItem.classList.toggle('active');
+    }
+    
+    // Form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Form ma'lumotlarini olish
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+        
+        // Loading ko'rsatish
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Jo\'natilmoqda...';
+        submitBtn.disabled = true;
+        
+        // Simulyatsiya: 2 soniya kutish
+        setTimeout(() => {
+            // Muvaffaqiyat xabari
+            alert('Xabaringiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog\'lanamiz.');
+            
+            // Formani tozalash
+            this.reset();
+            
+            // Tugmani qayta tiklash
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 2000);
+    });
+    
+    // Sahifa yuklanganda birinchi FAQ ni ochish
+    document.addEventListener('DOMContentLoaded', function() {
+        // Birinchi FAQ ni ochiq qilish
+        document.querySelectorAll('.faq-item')[0]?.classList.add('active');
+    });
+</script>
+{% endblock %}

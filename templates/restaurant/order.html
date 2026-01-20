@@ -1,0 +1,778 @@
+{% extends 'base.html' %}
+
+{% block title %}Buyurtma berish - Fast Food Restorani{% endblock %}
+
+{% block extra_css %}
+<style>
+    .step-container {
+        position: relative;
+        margin-bottom: 30px;
+    }
+    
+    .step-line {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        right: 25px;
+        height: 2px;
+        background-color: #dee2e6;
+        z-index: 1;
+    }
+    
+    .step {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #6c757d;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: 0 auto 10px;
+    }
+    
+    .step.active .step-number {
+        background-color: #0d6efd;
+    }
+    
+    .step.completed .step-number {
+        background-color: #198754;
+    }
+    
+    .step-label {
+        font-weight: 600;
+        color: #6c757d;
+    }
+    
+    .step.active .step-label {
+        color: #0d6efd;
+    }
+    
+    .step.completed .step-label {
+        color: #198754;
+    }
+    
+    .order-section {
+        display: none;
+    }
+    
+    .order-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .menu-item-card {
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+    
+    .menu-item-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .menu-item-card.selected {
+        border-color: #0d6efd;
+        background-color: #f8f9fa;
+    }
+    
+    .category-btn {
+        transition: all 0.3s ease;
+    }
+    
+    .category-btn.active {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4 text-center">
+        <i class="fas fa-shopping-cart"></i> Buyurtma berish
+    </h1>
+    
+    <!-- Qadamlar -->
+    <div class="step-container">
+        <div class="step-line"></div>
+        <div class="row">
+            <div class="col-md-3 step active" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-label">Taom tanlash</div>
+            </div>
+            <div class="col-md-3 step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-label">Ma'lumotlarni kiritish</div>
+            </div>
+            <div class="col-md-3 step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-label">Tasdiqlash</div>
+            </div>
+            <div class="col-md-3 step" id="step4">
+                <div class="step-number">4</div>
+                <div class="step-label">Buyurtma berildi</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 1-qadam: Taom tanlash -->
+    <div class="order-section active" id="section1">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-utensils"></i> Taomlarni tanlang
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Kategoriyalar -->
+                <div class="mb-4">
+                    <h6>Kategoriya:</h6>
+                    <div class="btn-group flex-wrap" role="group">
+                        <button type="button" class="btn btn-outline-primary category-btn active" data-category="all">
+                            Barchasi
+                        </button>
+                        <button type="button" class="btn btn-outline-primary category-btn" data-category="burger">
+                            Burgerlar
+                        </button>
+                        <button type="button" class="btn btn-outline-primary category-btn" data-category="pizza">
+                            Pizzalar
+                        </button>
+                        <button type="button" class="btn btn-outline-primary category-btn" data-category="drink">
+                            Ichimliklar
+                        </button>
+                        <button type="button" class="btn btn-outline-primary category-btn" data-category="dessert">
+                            Shirinliklar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Taomlar ro'yxati -->
+                <div class="row" id="menu-items">
+                    <!-- Taomlar JavaScript orqali yuklanadi -->
+                </div>
+                
+                <!-- Tanlangan taomlar -->
+                <div class="mt-4">
+                    <h6>Tanlangan taomlar:</h6>
+                    <div class="table-responsive">
+                        <table class="table" id="selected-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Taom</th>
+                                    <th>Narxi</th>
+                                    <th>Miqdori</th>
+                                    <th>Jami</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="selected-items">
+                                <!-- Tanlangan taomlar bu yerda ko'rsatiladi -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Jami:</strong></td>
+                                    <td><strong id="total-price">0</strong> so'm</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Tugmalar -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'restaurant:menu' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Menyuga qaytish
+                    </a>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Davom etish <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 2-qadam: Ma'lumotlarni kiritish -->
+    <div class="order-section" id="section2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-user"></i> Ma'lumotlaringizni kiriting
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="order-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Ismingiz *</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Telefon raqamingiz *</label>
+                            <input type="tel" class="form-control" id="phone" required 
+                                   pattern="[0-9]{9}" placeholder="901234567">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Manzil (yetkazib berish uchun)</label>
+                        <textarea class="form-control" id="address" rows="3" 
+                                  placeholder="Shahar, tuman, ko'cha, uy raqami"></textarea>
+                        <div class="form-text">Agar restoranda ovqatlansangiz, bu maydonni to'ldirish shart emas</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="delivery-type" class="form-label">Buyurtma turi</label>
+                        <select class="form-select" id="delivery-type">
+                            <option value="delivery">Yetkazib berish</option>
+                            <option value="pickup">Restorandan olib ketish</option>
+                            <option value="dine-in">Restoranda ovqatlanish</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3" id="table-section" style="display: none;">
+                        <label for="table-number" class="form-label">Stol raqami</label>
+                        <select class="form-select" id="table-number">
+                            <option value="">Stol tanlang</option>
+                            <option value="1">Stol 1 (2 kishilik)</option>
+                            <option value="2">Stol 2 (2 kishilik)</option>
+                            <option value="3">Stol 3 (4 kishilik)</option>
+                            <option value="4">Stol 4 (4 kishilik)</option>
+                            <option value="5">Stol 5 (6 kishilik)</option>
+                            <option value="6">Stol 6 (6 kishilik)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Qo'shimcha iltimoslar</label>
+                        <textarea class="form-control" id="notes" rows="3" 
+                                  placeholder="Masalan: achchiq qilmang, qo'shimcha sous kerak, va h.k."></textarea>
+                    </div>
+                    
+                    <!-- Tugmalar -->
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep()">
+                            <i class="fas fa-arrow-left"></i> Orqaga
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Tasdiqlash <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 3-qadam: Tasdiqlash -->
+    <div class="order-section" id="section3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-check-circle"></i> Buyurtmani tasdiqlang
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Buyurtma xulosasi -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Buyurtma ma'lumotlari:</h6>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p><strong>Ism:</strong> <span id="review-name">-</span></p>
+                                <p><strong>Telefon:</strong> <span id="review-phone">-</span></p>
+                                <p><strong>Manzil:</strong> <span id="review-address">-</span></p>
+                                <p><strong>Buyurtma turi:</strong> <span id="review-delivery-type">-</span></p>
+                                <p><strong>Stol raqami:</strong> <span id="review-table">-</span></p>
+                                <p><strong>Qo'shimcha iltimoslar:</strong> <span id="review-notes">-</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>Tanlangan taomlar:</h6>
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="review-items">
+                                    <!-- Taomlar bu yerda ko'rsatiladi -->
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Jami:</strong>
+                                    <strong id="review-total">0 so'm</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tugmalar -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Orqaga
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="submitOrder()">
+                        <i class="fas fa-paper-plane"></i> Buyurtma berish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 4-qadam: Muvaffaqiyat -->
+    <div class="order-section" id="section4">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <div class="success-icon mb-4">
+                    <i class="fas fa-check-circle fa-5x text-success"></i>
+                </div>
+                <h3 class="mb-3">Buyurtma muvaffaqiyatli qabul qilindi!</h3>
+                <p class="text-muted mb-4" id="order-details">
+                    Buyurtma raqami: <strong>#ORD-001</strong><br>
+                    Taxminiy tayyorlanish vaqti: <strong>25 daqiqa</strong>
+                </p>
+                
+                <div class="alert alert-info text-start mb-4">
+                    <h6><i class="fas fa-info-circle"></i> Ma'lumot:</h6>
+                    <ul class="mb-0">
+                        <li>Buyurtmangizni qayta ko'rish uchun <a href="#">buyurtmalarim</a> sahifasiga o'ting</li>
+                        <li>Buyurtma holatini telefon orqali kuzatishingiz mumkin</li>
+                        <li>Agar savollaringiz bo'lsa, biz bilan bog'lanishingiz mumkin</li>
+                    </ul>
+                </div>
+                
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'restaurant:home' %}" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Bosh sahifaga
+                    </a>
+                    <a href="{% url 'restaurant:menu' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-utensils"></i> Yana buyurtma berish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Items Data -->
+<script>
+    // Taomlar ma'lumotlari
+    const menuItems = [
+        {
+            id: 1,
+            name: "Big Burger",
+            category: "burger",
+            price: 35000,
+            description: "Mazali go'sht, pishloq va sabzavotlar",
+            image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 2,
+            name: "Cheeseburger",
+            category: "burger",
+            price: 30000,
+            description: "Go'sht va ko'p miqdorda pishloq",
+            image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 3,
+            name: "Chicken Burger",
+            category: "burger",
+            price: 32000,
+            description: "Tovuq go'shti bilan tayyorlangan",
+            image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 4,
+            name: "Pizza Margarita",
+            category: "pizza",
+            price: 55000,
+            description: "Italyancha klassik pizza",
+            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 5,
+            name: "Pizza Pepperoni",
+            category: "pizza",
+            price: 65000,
+            description: "Pepperoni va pishloq bilan",
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 6,
+            name: "Coca-Cola",
+            category: "drink",
+            price: 12000,
+            description: "0.5L, sovuq",
+            image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 7,
+            name: "Fanta",
+            category: "drink",
+            price: 12000,
+            description: "0.5L, apelsinli",
+            image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            id: 8,
+            name: "Ice Cream",
+            category: "dessert",
+            price: 15000,
+            description: "Vanil, shokolad, qulupnay",
+            image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        }
+    ];
+
+    // Tanlangan taomlar
+    let selectedItems = [];
+    let currentStep = 1;
+
+    // Sahifa yuklanganda
+    document.addEventListener('DOMContentLoaded', function() {
+        loadMenuItems('all');
+        setupEventListeners();
+    });
+
+    // Event listenerlarni sozlash
+    function setupEventListeners() {
+        // Kategoriya tugmalari
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+                loadMenuItems(this.dataset.category);
+            });
+        });
+
+        // Yetkazib berish turi o'zgarganda
+        document.getElementById('delivery-type').addEventListener('change', function() {
+            const tableSection = document.getElementById('table-section');
+            if (this.value === 'dine-in') {
+                tableSection.style.display = 'block';
+            } else {
+                tableSection.style.display = 'none';
+            }
+        });
+    }
+
+    // Taomlarni yuklash
+    function loadMenuItems(category) {
+        const container = document.getElementById('menu-items');
+        container.innerHTML = '';
+
+        const filteredItems = category === 'all' 
+            ? menuItems 
+            : menuItems.filter(item => item.category === category);
+
+        filteredItems.forEach(item => {
+            const isSelected = selectedItems.some(selected => selected.id === item.id);
+            
+            const itemHTML = `
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card menu-item-card h-100 ${isSelected ? 'selected' : ''}" 
+                         onclick="toggleItem(${item.id})">
+                        <img src="${item.image}" 
+                             class="card-img-top" 
+                             alt="${item.name}"
+                             style="height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title">${item.name}</h6>
+                            <p class="card-text text-muted small">${item.description}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">${item.price.toLocaleString()} so'm</span>
+                                ${isSelected ? '<i class="fas fa-check text-success"></i>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML += itemHTML;
+        });
+    }
+
+    // Taomni tanlash/o'chirish
+    function toggleItem(itemId) {
+        const item = menuItems.find(i => i.id === itemId);
+        const index = selectedItems.findIndex(i => i.id === itemId);
+        
+        if (index === -1) {
+            // Qo'shish
+            selectedItems.push({
+                ...item,
+                quantity: 1
+            });
+        } else {
+            // O'chirish
+            selectedItems.splice(index, 1);
+        }
+        
+        loadMenuItems(document.querySelector('.category-btn.active').dataset.category);
+        updateSelectedItemsTable();
+    }
+
+    // Miqdorni o'zgartirish
+    function updateQuantity(itemId, change) {
+        const item = selectedItems.find(i => i.id === itemId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity < 1) {
+                // Agar miqdor 0 bo'lsa, o'chirish
+                selectedItems = selectedItems.filter(i => i.id !== itemId);
+                loadMenuItems(document.querySelector('.category-btn.active').dataset.category);
+            }
+            updateSelectedItemsTable();
+        }
+    }
+
+    // Tanlangan taomlar jadvalini yangilash
+    function updateSelectedItemsTable() {
+        const container = document.getElementById('selected-items');
+        const totalPriceElement = document.getElementById('total-price');
+        
+        container.innerHTML = '';
+        
+        if (selectedItems.length === 0) {
+            container.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        <i class="fas fa-shopping-cart fa-2x mb-2"></i><br>
+                        Hech qanday taom tanlanmagan
+                    </td>
+                </tr>
+            `;
+            totalPriceElement.textContent = '0';
+            return;
+        }
+        
+        let totalPrice = 0;
+        
+        selectedItems.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            totalPrice += itemTotal;
+            
+            const row = `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.price.toLocaleString()} so'm</td>
+                    <td>
+                        <div class="input-group input-group-sm" style="width: 120px;">
+                            <button class="btn btn-outline-secondary" 
+                                    onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <input type="text" class="form-control text-center" 
+                                   value="${item.quantity}" readonly>
+                            <button class="btn btn-outline-secondary" 
+                                    onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </td>
+                    <td>${itemTotal.toLocaleString()} so'm</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" 
+                                onclick="removeItem(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            
+            container.innerHTML += row;
+        });
+        
+        totalPriceElement.textContent = totalPrice.toLocaleString();
+    }
+
+    // Taomni o'chirish
+    function removeItem(itemId) {
+        selectedItems = selectedItems.filter(i => i.id !== itemId);
+        loadMenuItems(document.querySelector('.category-btn.active').dataset.category);
+        updateSelectedItemsTable();
+    }
+
+    // Keyingi qadamga o'tish
+    function nextStep() {
+        if (currentStep === 1) {
+            // 1-qadam: Taom tanlashni tekshirish
+            if (selectedItems.length === 0) {
+                alert('Iltimos, kamida bitta taom tanlang!');
+                return;
+            }
+            
+            // 2-qadamga o'tish
+            currentStep = 2;
+            updateSteps();
+            showSection(2);
+        } else if (currentStep === 2) {
+            // 2-qadam: Ma'lumotlarni tekshirish
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            if (!name) {
+                alert('Iltimos, ismingizni kiriting!');
+                document.getElementById('name').focus();
+                return;
+            }
+            
+            if (!phone || !/^\d{9}$/.test(phone)) {
+                alert('Iltimos, to\'g\'ri telefon raqamini kiriting (9 raqam)!');
+                document.getElementById('phone').focus();
+                return;
+            }
+            
+            // Tasdiqlash sahifasiga ma'lumotlarni yuklash
+            updateReviewSection();
+            
+            // 3-qadamga o'tish
+            currentStep = 3;
+            updateSteps();
+            showSection(3);
+        } else if (currentStep === 3) {
+            // 3-qadam: Buyurtmani yuborish
+            submitOrder();
+        }
+    }
+
+    // Oldingi qadamga qaytish
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateSteps();
+            showSection(currentStep);
+        }
+    }
+
+    // Qadamlar holatini yangilash
+    function updateSteps() {
+        // Barcha qadamlar aktiv emas
+        document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active', 'completed');
+        });
+        
+        // Aktiv va o'tilgan qadamlarni belgilash
+        for (let i = 1; i <= 4; i++) {
+            const stepElement = document.getElementById('step' + i);
+            if (i < currentStep) {
+                stepElement.classList.add('completed');
+            } else if (i === currentStep) {
+                stepElement.classList.add('active');
+            }
+        }
+    }
+
+    // Bo'limni ko'rsatish
+    function showSection(sectionNumber) {
+        // Barcha bo'limlarni yashirish
+        document.querySelectorAll('.order-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // Tanlangan bo'limni ko'rsatish
+        document.getElementById('section' + sectionNumber).classList.add('active');
+        
+        // Sahifa yuqorisiga o'tish
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Tasdiqlash bo'limini yangilash
+    function updateReviewSection() {
+        // Ma'lumotlarni olish
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const deliveryType = document.getElementById('delivery-type').value;
+        const table = document.getElementById('table-number').value;
+        const notes = document.getElementById('notes').value;
+        
+        // Tasdiqlash bo'limiga yuklash
+        document.getElementById('review-name').textContent = name;
+        document.getElementById('review-phone').textContent = phone;
+        document.getElementById('review-address').textContent = address || 'Ko\'rsatilmagan';
+        
+        // Yetkazib berish turini tarjima qilish
+        const deliveryTypes = {
+            'delivery': 'Yetkazib berish',
+            'pickup': 'Restorandan olib ketish',
+            'dine-in': 'Restoranda ovqatlanish'
+        };
+        document.getElementById('review-delivery-type').textContent = deliveryTypes[deliveryType] || '-';
+        document.getElementById('review-table').textContent = table ? 'Stol ' + table : '-';
+        document.getElementById('review-notes').textContent = notes || 'Yo\'q';
+        
+        // Taomlarni ko'rsatish
+        const reviewItemsContainer = document.getElementById('review-items');
+        reviewItemsContainer.innerHTML = '';
+        
+        let totalPrice = 0;
+        
+        selectedItems.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            totalPrice += itemTotal;
+            
+            const itemHTML = `
+                <div class="d-flex justify-content-between mb-2">
+                    <div>
+                        ${item.name} × ${item.quantity}
+                    </div>
+                    <div>
+                        ${itemTotal.toLocaleString()} so'm
+                    </div>
+                </div>
+            `;
+            
+            reviewItemsContainer.innerHTML += itemHTML;
+        });
+        
+        document.getElementById('review-total').textContent = totalPrice.toLocaleString() + ' so\'m';
+    }
+
+    // Buyurtmani yuborish
+    function submitOrder() {
+        // Bu yerda serverga so'rov yuboriladi
+        // Hozircha simulyatsiya qilamiz
+        
+        // Loading ko'rsatish
+        const submitBtn = document.querySelector('button[onclick="submitOrder()"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yuborilmoqda...';
+        submitBtn.disabled = true;
+        
+        // Simulyatsiya: 2 soniya kutish
+        setTimeout(() => {
+            // 4-qadamga o'tish
+            currentStep = 4;
+            updateSteps();
+            showSection(4);
+            
+            // Buyurtma raqamini generatsiya qilish
+            const orderNumber = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+            const time = Math.max(15, selectedItems.length * 5);
+            
+            document.getElementById('order-details').innerHTML = `
+                Buyurtma raqami: <strong>#${orderNumber}</strong><br>
+                Taxminiy tayyorlanish vaqti: <strong>${time} daqiqa</strong>
+            `;
+            
+            // Tugmani qayta tiklash
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 2000);
+    }
+
+    // Sahifa yuklanganda dastlabki yuklash
+    updateSelectedItemsTable();
+</script>
+{% endblock %}
