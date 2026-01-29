@@ -6,8 +6,6 @@ from django.http import JsonResponse
 import json
 from datetime import datetime
 from .models import Product, Category, Table, Order, OrderItem, Reservation
-from .telegram_bot import send_order_notification, send_reservation_notification
-
 # ==================== ASOSIY SAHIFALAR ====================
 
 def home(request):
@@ -672,3 +670,116 @@ def get_cart_items(request):
         'total': float(total),
         'success': True
     })
+    
+    # restaurant/views.py - telegram funksiyalarini views.py ichiga qo'shamiz
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.http import JsonResponse
+import json
+from datetime import datetime
+from .models import Product, Category, Table, Order, OrderItem, Reservation
+
+# ==================== TELEGRAM FUNKSIYALARI ====================
+
+def send_order_notification(order):
+    """Buyurtma haqida xabar yuborish"""
+    try:
+        # Terminalga chiqarish (vaqtincha)
+        message = f"""
+📦 YANGI BUYURTMA #{order.id}
+
+👤 Mijoz: {order.customer_name}
+📞 Telefon: {order.phone}
+💰 Jami narx: {order.total_price:,} so'm
+📊 Holat: {order.get_status_display()}
+⏰ Vaqt: {order.created_at.strftime('%d.%m.%Y %H:%M')}
+"""
+        
+        print(message)
+        print("="*50)
+        
+        # Kelajakda telegramga yuborish kodi shu yerda bo'ladi
+        # import requests
+        # url = f"https://api.telegram.org/botYOUR_TOKEN/sendMessage"
+        # data = {
+        #     'chat_id': '6959926310',
+        #     'text': message,
+        #     'parse_mode': 'HTML'
+        # }
+        # requests.post(url, data=data)
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Buyurtma xabarini yuborishda xato: {str(e)}")
+        return True
+
+def send_reservation_notification(reservation):
+    """Bron haqida xabar yuborish"""
+    try:
+        # Terminalga chiqarish (vaqtincha)
+        message = f"""
+📅 YANGI BRON #{reservation.id}
+
+👤 Mijoz: {reservation.customer_name}
+📞 Telefon: {reservation.phone}
+🪑 Stol: Stol {reservation.table.number}
+📅 Sana: {reservation.date} {reservation.time}
+👥 Mehmonlar: {reservation.guests} kishi
+⏰ Bron vaqti: {reservation.created_at.strftime('%d.%m.%Y %H:%M')}
+"""
+        
+        print(message)
+        print("="*50)
+        
+        # Kelajakda telegramga yuborish kodi shu yerda bo'ladi
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Bron xabarini yuborishda xato: {str(e)}")
+        return True
+
+# ==================== ASOSIY SAHIFALAR ====================
+
+def home(request):
+    """Bosh sahifa"""
+    categories = Category.objects.all()[:6]
+    featured_products = Product.objects.filter(is_available=True)[:8]
+    
+    context = {
+        'categories': categories,
+        'featured_products': featured_products,
+    }
+    return render(request, 'restaurant/home.html', context)
+
+def menu(request):
+    """Menyu sahifasi"""
+    products = Product.objects.filter(is_available=True)
+    categories = Category.objects.all()
+    
+    context = {
+        'products': products,
+        'categories': categories,
+    }
+    return render(request, 'restaurant/menu.html', context)
+
+def about(request):
+    """Biz haqimizda sahifasi"""
+    return render(request, 'restaurant/about.html')
+
+def contact(request):
+    """Aloqa sahifasi"""
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        message_text = request.POST.get('message', '').strip()
+        
+        if name and message_text:
+            messages.success(request, 'Xabaringiz muvaffaqiyatli yuborildi!')
+        else:
+            messages.error(request, 'Iltimos, ism va xabaringizni kiriting!')
+    
+    return render(request, 'restaurant/contact.html')
+
+# ... qolgan funksiyalar avvalgidek

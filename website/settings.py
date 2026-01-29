@@ -98,5 +98,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # website/settings.py - oxiriga qo'shing
 
 # Telegram bot sozlamalari
-TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'  # BotFather dan oling
-TELEGRAM_ADMIN_ID = '6959926310'
+TELEGRAM_BOT_TOKEN = '8215513833:AAGXGZj4qe6gIUT6KpWbKfjN6JIqqAYyYaw'  # BotFather dan oling
+TELEGRAM_ADMIN_ID = '7750527012'
