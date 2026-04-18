@@ -10,7 +10,10 @@ class ProductSitemap(Sitemap):
         return Product.objects.filter(is_available=True)
 
     def lastmod(self, obj):
-        return None # Agar modelda updated_at bo'lsa shuni qaytaring
+        return None
+
+    def location(self, obj):
+        return reverse('restaurant:menu')
 
 class StaticViewSitemap(Sitemap):
     priority = 0.8
