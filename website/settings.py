@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-your-secret-key-change-this-in-production'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'yourusername.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fastfooduz.pythonanywhere.com']
 
 # ♻️ CART SESSION ID QO'SHILDI
 CART_SESSION_ID = 'cart'
