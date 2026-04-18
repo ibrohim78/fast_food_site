@@ -7,7 +7,6 @@ import json
 from datetime import datetime
 from django.db import transaction
 from .models import Product, Category, Table, Order, OrderItem, Reservation
-from .telegram_bot import send_order_notification, send_reservation_notification # Signallar ishlamasa qo'lda chaqirish uchun
 # ==================== ASOSIY SAHIFALAR ====================
 
 def home(request):
@@ -563,49 +562,3 @@ def check_table_availability(request):
             'success': False,
             'message': 'Stol topilmadi'
         })
-
-# ==================== TELEGRAM BOT FUNKSIYASI ====================
-
-def test_telegram(request):
-    """Telegram botni test qilish (faqat admin uchun)"""
-    # Bu funksiya faqat test uchun
-    from .telegram_bot import send_order_notification, send_reservation_notification
-    
-    # Test buyurtma
-    test_order = {
-        'id': 999,
-        'customer_name': 'Test Mijoz',
-        'phone': '901234567',
-        'address': 'Test manzil',
-        'total_price': 75000,
-        'get_status_display': lambda: 'Kutilyapti',
-        'created_at': datetime.now(),
-        'estimated_time': 25
-    }
-    
-    # Test bron
-    test_reservation = {
-        'id': 999,
-        'customer_name': 'Test Mijoz',
-        'phone': '901234567',
-        'email': 'test@example.com',
-        'table': type('obj', (object,), {'number': 5}),
-        'date': '2024-01-01',
-        'time': '18:00',
-        'guests': 4,
-        'special_requests': 'Test iltimos',
-        'created_at': datetime.now()
-    }
-    
-    try:
-        # Test xabarlarni yuborish
-        send_order_notification(test_order)
-        send_reservation_notification(test_reservation)
-        
-        messages.success(request, 'Test xabarlar telegramga yuborildi!')
-    except Exception as e:
-        messages.error(request, f'Xatolik: {str(e)}')
-    
-    return redirect('restaurant:home')
-
-# ... qolgan funksiyalar avvalgidek

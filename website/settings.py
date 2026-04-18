@@ -95,9 +95,3 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# website/settings.py - oxiriga qo'shing
-
-# Telegram bot sozlamalari
-TELEGRAM_BOT_TOKEN = '8215513833:AAG8cVBULt0zCiyLUZuhXHYBK3x1TLcwsN8'  # Ishlaydigan tokenni yozing
-TELEGRAM_ADMIN_ID = '7750527012'  # Chat ID to'g'riligini tekshiring

@@ -27,7 +27,4 @@ urlpatterns = [
     # API endpoints
     path('api/cart/count/', views.get_cart_count, name='api_cart_count'),
     path('api/cart/items/', views.get_cart_items, name='api_cart_items'),
-    
-    # Test sahifasi
-    path('test-telegram/', views.test_telegram, name='test_telegram'),
 ]
