@@ -241,6 +241,9 @@ def reservation(request):
                 special_requests=special_requests
             )
             
+            # Telegramga xabar yuborish (Signal orqali ham ishlaydi, lekin kafolat uchun)
+            transaction.on_commit(lambda: send_reservation_notification(reservation))
+            
             # Muvaffaqiyatli sahifaga yo'naltirish
             messages.success(request, f'✅ Bron muvaffaqiyatli qabul qilindi! Bron raqami: #{reservation.id}')
             return redirect('restaurant:reservation_success')

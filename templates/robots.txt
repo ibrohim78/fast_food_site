@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /order/success/
+Disallow: /reservation/success/
 
-Sitemap: {{ request.scheme }}://{{ request.get_host }}{% url 'django.contrib.sitemaps.views.sitemap' %}
+Sitemap: https://yourdomain.com/sitemap.xml
