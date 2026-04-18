@@ -38,6 +38,11 @@ urlpatterns = [
         TemplateView.as_view(template_name='robots.txt', content_type='text/plain'),
         name='robots_txt',
     ),
+    path(
+        'google4f0ffe6fbf634ae9.html',
+        TemplateView.as_view(template_name='google4f0ffe6fbf634ae9.html', content_type='text/html'),
+        name='google_verification_file',
+    ),
 ]
 
 if settings.DEBUG:
