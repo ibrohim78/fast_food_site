@@ -138,9 +138,6 @@ def order(request):
             order.total_price = total_price
             order.save()
             
-            # Tranzaksiya tugagandan so'ng xabar yuborish (OrderItem lar bazada bo'lishi uchun)
-            transaction.on_commit(lambda: send_order_notification(order))
-            
             # Muvaffaqiyatli sahifaga yo'naltirish
             messages.success(request, f'✅ Buyurtma muvaffaqiyatli qabul qilindi! Buyurtma raqami: #{order.id}')
             return redirect('restaurant:order_success', order_id=order.id)
@@ -240,9 +237,6 @@ def reservation(request):
                 guests=guests_int,
                 special_requests=special_requests
             )
-            
-            # Telegramga xabar yuborish (Signal orqali ham ishlaydi, lekin kafolat uchun)
-            transaction.on_commit(lambda: send_reservation_notification(reservation))
             
             # Muvaffaqiyatli sahifaga yo'naltirish
             messages.success(request, f'✅ Bron muvaffaqiyatli qabul qilindi! Bron raqami: #{reservation.id}')

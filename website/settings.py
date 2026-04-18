@@ -9,9 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-your-secret-key-change-this-in-production'
 
-DEBUG = True
+DEBUG = False  # Productionda False bo'lishi kerak
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'yourusername.pythonanywhere.com'] # O'z domeningizni yozing
 
 # ♻️ CART SESSION ID QO'SHILDI
 CART_SESSION_ID = 'cart'
