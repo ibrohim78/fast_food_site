@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /order/success/
+
+Sitemap: {{ request.scheme }}://{{ request.get_host }}/sitemap.xml

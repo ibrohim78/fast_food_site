@@ -13,6 +13,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--dark-color);
+    background: #f7f8fc;
 }
 
 /* Header */
@@ -127,20 +128,180 @@ body {
 
 /* Footer */
 .footer {
-    background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(255, 193, 7, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(13, 110, 253, 0.22), transparent 30%),
+        linear-gradient(135deg, #18212f 0%, #24364f 55%, #16202b 100%);
+    color: #fff;
+}
+
+.footer-glow {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: 0.35;
+    animation: footerFloat 8s ease-in-out infinite;
+}
+
+.footer-glow-left {
+    top: -80px;
+    left: -60px;
+    background: rgba(255, 193, 7, 0.4);
+}
+
+.footer-glow-right {
+    right: -80px;
+    bottom: -90px;
+    background: rgba(13, 110, 253, 0.35);
+    animation-delay: 1.5s;
 }
 
 .footer h5 {
-    color: var(--warning-color);
+    color: #fff;
     margin-bottom: 1rem;
 }
 
+.footer-card {
+    height: 100%;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.18);
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.footer-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 193, 7, 0.45);
+    box-shadow: 0 24px 50px rgba(0,0,0,0.24);
+}
+
+.footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 193, 7, 0.14);
+    color: #ffd45c;
+    font-weight: 700;
+}
+
+.footer-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+    color: rgba(255, 255, 255, 0.84);
+}
+
+.footer-list a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-list a:hover {
+    color: #ffd45c;
+}
+
+.footer-hours {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.footer-hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.footer-hours span {
+    color: rgba(255, 255, 255, 0.72);
+}
+
 .social-links a {
-    transition: transform 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-right: 0.75rem;
+    border-radius: 50%;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .social-links a:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.05);
+    background: #ffc107;
+    color: #18212f;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-bottom a {
+    color: #ffd45c;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: footerReveal 0.9s ease forwards;
+}
+
+.footer-delay-1 {
+    animation-delay: 0.15s;
+}
+
+.footer-delay-2 {
+    animation-delay: 0.3s;
+}
+
+.footer-delay-3 {
+    animation-delay: 0.45s;
+}
+
+@keyframes footerReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes footerFloat {
+    0%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, 18px, 0);
+    }
 }
 
 /* Responsive */
@@ -151,5 +312,11 @@ body {
     
     .logo h1 {
         font-size: 2rem;
+    }
+
+    .footer-hours div,
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

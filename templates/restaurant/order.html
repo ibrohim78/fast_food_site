@@ -150,6 +150,9 @@
                         <button type="button" class="btn btn-outline-primary category-btn" data-category="pizza">
                             Pizzalar
                         </button>
+                        <button type="button" class="btn btn-outline-primary category-btn" data-category="lavash">
+                            Lavashlar
+                        </button>
                         <button type="button" class="btn btn-outline-primary category-btn" data-category="drink">
                             Ichimliklar
                         </button>
@@ -376,63 +379,151 @@
             category: "burger",
             price: 35000,
             description: "Mazali go'sht, pishloq va sabzavotlar",
-            image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
         },
         {
             id: 2,
             name: "Cheeseburger",
             category: "burger",
-            price: 30000,
+            price: 32000,
             description: "Go'sht va ko'p miqdorda pishloq",
-            image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=900&q=80"
         },
         {
             id: 3,
-            name: "Chicken Burger",
+            name: "Double Burger",
             category: "burger",
-            price: 32000,
-            description: "Tovuq go'shti bilan tayyorlangan",
-            image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            price: 42000,
+            description: "Ikki qavatli kotlet bilan to'yimli burger",
+            image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=900&q=80"
         },
         {
             id: 4,
+            name: "Chicken Burger",
+            category: "burger",
+            price: 33000,
+            description: "Tovuq go'shti bilan tayyorlangan",
+            image: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 5,
+            name: "BBQ Burger",
+            category: "burger",
+            price: 39000,
+            description: "BBQ sous va piyoz halqalari bilan",
+            image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 6,
             name: "Pizza Margarita",
             category: "pizza",
             price: 55000,
             description: "Italyancha klassik pizza",
-            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=80"
         },
         {
-            id: 5,
+            id: 7,
             name: "Pizza Pepperoni",
             category: "pizza",
             price: 65000,
             description: "Pepperoni va pishloq bilan",
-            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80"
         },
         {
-            id: 6,
+            id: 8,
+            name: "Pizza Go'shtli",
+            category: "pizza",
+            price: 69000,
+            description: "Go'shtli toppinglar bilan to'yimli pizza",
+            image: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 9,
+            name: "Pizza Veggie",
+            category: "pizza",
+            price: 58000,
+            description: "Sabzavotlar va qo'ziqorinli yengil pizza",
+            image: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 10,
+            name: "Tovuq Lavash",
+            category: "lavash",
+            price: 30000,
+            description: "Tovuq filesi va fri bilan tayyorlangan lavash",
+            image: "https://images.unsplash.com/photo-1643131027890-14db1f89c094?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 11,
+            name: "Mol Go'shtli Lavash",
+            category: "lavash",
+            price: 34000,
+            description: "Mol go'shti va sabzavotli shirador lavash",
+            image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 12,
+            name: "Mini Lavash",
+            category: "lavash",
+            price: 22000,
+            description: "Yengil tamaddi uchun mini lavash",
+            image: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 13,
             name: "Coca-Cola",
             category: "drink",
             price: 12000,
             description: "0.5L, sovuq",
-            image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=900&q=80"
         },
         {
-            id: 7,
+            id: 14,
             name: "Fanta",
             category: "drink",
             price: 12000,
             description: "0.5L, apelsinli",
-            image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=900&q=80"
         },
         {
-            id: 8,
+            id: 15,
+            name: "Moxito",
+            category: "drink",
+            price: 18000,
+            description: "Limon va yalpizli muzdek ichimlik",
+            image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 16,
+            name: "Qulupnayli Milkshake",
+            category: "drink",
+            price: 22000,
+            description: "Qalin va shirin milkshake",
+            image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 17,
             name: "Ice Cream",
             category: "dessert",
             price: 15000,
             description: "Vanil, shokolad, qulupnay",
-            image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 18,
+            name: "Choco Donut",
+            category: "dessert",
+            price: 14000,
+            description: "Shokolad glazurli yumshoq donut",
+            image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            id: 19,
+            name: "Cheesecake",
+            category: "dessert",
+            price: 24000,
+            description: "Kremli va mayin cheesecake",
+            image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=900&q=80"
         }
     ];
 

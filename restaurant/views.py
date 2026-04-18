@@ -5,7 +5,9 @@ from django.contrib import messages
 from django.http import JsonResponse
 import json
 from datetime import datetime
+from django.db import transaction
 from .models import Product, Category, Table, Order, OrderItem, Reservation
+from .telegram_bot import send_order_notification, send_reservation_notification # Signallar ishlamasa qo'lda chaqirish uchun
 # ==================== ASOSIY SAHIFALAR ====================
 
 def home(request):
@@ -54,18 +56,8 @@ def contact(request):
             # Bu yerda email yuborish yoki ma'lumotlarni saqlash kodi bo'ladi
             # Hozircha faqat muvaffaqiyat xabarini ko'rsatamiz
             
-            # Telegramga xabar yuborish (admin uchun)
-            telegram_message = f"""
-📩 YANGI KONTAKT XABARI
-
-👤 Ism: {name}
-📧 Email: {email if email else 'Yo\'q'}
-📞 Telefon: {phone if phone else 'Yo\'q'}
-📌 Mavzu: {subject if subject else 'Boshqa'}
-📝 Xabar:
-{message}
-"""
-            send_reservation_notification({'customer_name': name, 'phone': phone or 'Yo\'q'})
+            # Kelajakda kontakt xabarlari uchun alohida model va bot funksiyasi qo'shish mumkin
+            print(f"Yangi xabar: {name} - {message}")
             
             messages.success(request, 'Xabaringiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog\'lanamiz.')
             return redirect('restaurant:contact')
@@ -146,8 +138,8 @@ def order(request):
             order.total_price = total_price
             order.save()
             
-            # Telegramga xabar yuborish
-            send_order_notification(order)
+            # Tranzaksiya tugagandan so'ng xabar yuborish (OrderItem lar bazada bo'lishi uchun)
+            transaction.on_commit(lambda: send_order_notification(order))
             
             # Muvaffaqiyatli sahifaga yo'naltirish
             messages.success(request, f'✅ Buyurtma muvaffaqiyatli qabul qilindi! Buyurtma raqami: #{order.id}')
@@ -248,9 +240,6 @@ def reservation(request):
                 guests=guests_int,
                 special_requests=special_requests
             )
-            
-            # Telegramga xabar yuborish
-            send_reservation_notification(reservation)
             
             # Muvaffaqiyatli sahifaga yo'naltirish
             messages.success(request, f'✅ Bron muvaffaqiyatli qabul qilindi! Bron raqami: #{reservation.id}')
@@ -621,165 +610,5 @@ def test_telegram(request):
         messages.error(request, f'Xatolik: {str(e)}')
     
     return redirect('restaurant:home')
-
-# restaurant/views.py - oxiriga quyidagilarni qo'shing
-
-def get_cart_count(request):
-    """Savatdagi mahsulotlar sonini qaytarish (AJAX uchun)"""
-    cart = request.session.get('cart', [])
-    cart_count = sum(item.get('quantity', 0) for item in cart)
-    
-    return JsonResponse({
-        'count': cart_count,
-        'success': True
-    })
-
-def get_cart_items(request):
-    """Savatdagi mahsulotlar ro'yxatini qaytarish (AJAX uchun)"""
-    cart = request.session.get('cart', [])
-    cart_items = []
-    subtotal = 0
-    
-    for item in cart:
-        try:
-            product = Product.objects.get(id=item['id'])
-            quantity = int(item.get('quantity', 1))
-            item_total = product.price * quantity
-            
-            cart_items.append({
-                'id': product.id,
-                'name': product.name,
-                'price': float(product.price),
-                'quantity': quantity,
-                'total': float(item_total),
-                'image': product.image.url if product.image else ''
-            })
-            
-            subtotal += item_total
-            
-        except (Product.DoesNotExist, ValueError, KeyError):
-            continue
-    
-    delivery_fee = 0 if subtotal > 50000 else 15000
-    total = subtotal + delivery_fee
-    
-    return JsonResponse({
-        'items': cart_items,
-        'subtotal': float(subtotal),
-        'delivery_fee': float(delivery_fee),
-        'total': float(total),
-        'success': True
-    })
-    
-    # restaurant/views.py - telegram funksiyalarini views.py ichiga qo'shamiz
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.http import JsonResponse
-import json
-from datetime import datetime
-from .models import Product, Category, Table, Order, OrderItem, Reservation
-
-# ==================== TELEGRAM FUNKSIYALARI ====================
-
-def send_order_notification(order):
-    """Buyurtma haqida xabar yuborish"""
-    try:
-        # Terminalga chiqarish (vaqtincha)
-        message = f"""
-📦 YANGI BUYURTMA #{order.id}
-
-👤 Mijoz: {order.customer_name}
-📞 Telefon: {order.phone}
-💰 Jami narx: {order.total_price:,} so'm
-📊 Holat: {order.get_status_display()}
-⏰ Vaqt: {order.created_at.strftime('%d.%m.%Y %H:%M')}
-"""
-        
-        print(message)
-        print("="*50)
-        
-        # Kelajakda telegramga yuborish kodi shu yerda bo'ladi
-        # import requests
-        # url = f"https://api.telegram.org/botYOUR_TOKEN/sendMessage"
-        # data = {
-        #     'chat_id': '6959926310',
-        #     'text': message,
-        #     'parse_mode': 'HTML'
-        # }
-        # requests.post(url, data=data)
-        
-        return True
-        
-    except Exception as e:
-        print(f"❌ Buyurtma xabarini yuborishda xato: {str(e)}")
-        return True
-
-def send_reservation_notification(reservation):
-    """Bron haqida xabar yuborish"""
-    try:
-        # Terminalga chiqarish (vaqtincha)
-        message = f"""
-📅 YANGI BRON #{reservation.id}
-
-👤 Mijoz: {reservation.customer_name}
-📞 Telefon: {reservation.phone}
-🪑 Stol: Stol {reservation.table.number}
-📅 Sana: {reservation.date} {reservation.time}
-👥 Mehmonlar: {reservation.guests} kishi
-⏰ Bron vaqti: {reservation.created_at.strftime('%d.%m.%Y %H:%M')}
-"""
-        
-        print(message)
-        print("="*50)
-        
-        # Kelajakda telegramga yuborish kodi shu yerda bo'ladi
-        
-        return True
-        
-    except Exception as e:
-        print(f"❌ Bron xabarini yuborishda xato: {str(e)}")
-        return True
-
-# ==================== ASOSIY SAHIFALAR ====================
-
-def home(request):
-    """Bosh sahifa"""
-    categories = Category.objects.all()[:6]
-    featured_products = Product.objects.filter(is_available=True)[:8]
-    
-    context = {
-        'categories': categories,
-        'featured_products': featured_products,
-    }
-    return render(request, 'restaurant/home.html', context)
-
-def menu(request):
-    """Menyu sahifasi"""
-    products = Product.objects.filter(is_available=True)
-    categories = Category.objects.all()
-    
-    context = {
-        'products': products,
-        'categories': categories,
-    }
-    return render(request, 'restaurant/menu.html', context)
-
-def about(request):
-    """Biz haqimizda sahifasi"""
-    return render(request, 'restaurant/about.html')
-
-def contact(request):
-    """Aloqa sahifasi"""
-    if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        message_text = request.POST.get('message', '').strip()
-        
-        if name and message_text:
-            messages.success(request, 'Xabaringiz muvaffaqiyatli yuborildi!')
-        else:
-            messages.error(request, 'Iltimos, ism va xabaringizni kiriting!')
-    
-    return render(request, 'restaurant/contact.html')
 
 # ... qolgan funksiyalar avvalgidek

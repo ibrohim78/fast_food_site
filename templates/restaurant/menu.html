@@ -4,122 +4,296 @@
 
 {% block content %}
 <div class="container py-4">
-    <h1 class="text-center mb-5">Bizning menyu</h1>
-    
-    <!-- Kategoriya filtr -->
+    <div class="text-center mb-5">
+        <h1 class="mb-3">Bizning menyu</h1>
+        <p class="text-muted mb-0">Ko'proq tanlov, har bir taomga mos rasm va qulay filtr.</p>
+    </div>
+
     <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title">Kategoriya bo'yicha filtrlash:</h5>
-                    <div class="btn-group" role="group">
-                        <a href="{% url 'restaurant:menu' %}" class="btn btn-outline-primary active">
-                            Barchasi
-                        </a>
-                        <a href="#" class="btn btn-outline-primary">Burgerlar</a>
-                        <a href="#" class="btn btn-outline-primary">Pizzalar</a>
-                        <a href="#" class="btn btn-outline-primary">Ichimliklar</a>
-                        <a href="#" class="btn btn-outline-primary">Shirinliklar</a>
+                    <h5 class="card-title mb-3">Kategoriya bo'yicha filtrlash:</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-outline-primary menu-filter active" data-category="all">Barchasi</button>
+                        <button class="btn btn-outline-primary menu-filter" data-category="burger">Burgerlar</button>
+                        <button class="btn btn-outline-primary menu-filter" data-category="pizza">Pizzalar</button>
+                        <button class="btn btn-outline-primary menu-filter" data-category="lavash">Lavashlar</button>
+                        <button class="btn btn-outline-primary menu-filter" data-category="drink">Ichimliklar</button>
+                        <button class="btn btn-outline-primary menu-filter" data-category="dessert">Shirinliklar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Mahsulotlar -->
-    <div class="row">
-        {% for i in "12345678" %}
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card card-hover h-100">
-                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
-                     class="card-img-top" alt="Burger {{ i }}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        {% if forloop.counter == 1 %}Big Burger
-                        {% elif forloop.counter == 2 %}Cheeseburger
-                        {% elif forloop.counter == 3 %}Double Burger
-                        {% elif forloop.counter == 4 %}Chicken Burger
-                        {% elif forloop.counter == 5 %}Pizza Margarita
-                        {% elif forloop.counter == 6 %}Pizza Pepperoni
-                        {% elif forloop.counter == 7 %}Coca-Cola
-                        {% else %}Ice Cream{% endif %}
-                    </h5>
-                    <p class="card-text">
-                        {% if forloop.counter <= 4 %}
-                        Mazali go'sht va yangi sabzavotlar bilan tayyorlangan burger.
-                        {% elif forloop.counter <= 6 %}
-                        Italiyancha pizza, pishloq va ziravorlar bilan.
-                        {% elif forloop.counter == 7 %}
-                        Sovuq va yoqimli ichimlik.
-                        {% else %}
-                        Muzqaymoq, turli xil ta'mlarda.
-                        {% endif %}
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="h5 text-primary">
-                                {% if forloop.counter <= 4 %}35,000
-                                {% elif forloop.counter <= 6 %}55,000
-                                {% elif forloop.counter == 7 %}12,000
-                                {% else %}15,000{% endif %} so'm
-                            </span>
-                            <br>
-                            <small class="text-muted">
-                                <i class="fas fa-clock"></i> 
-                                {% if forloop.counter <= 4 %}15
-                                {% elif forloop.counter <= 6 %}25
-                                {% else %}5{% endif %} daqiqa
-                            </small>
-                        </div>
-                        <div>
-                            <button class="btn btn-success btn-sm add-to-cart-btn">
-                                <i class="fas fa-cart-plus"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm ms-1">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+
+    <div class="row" id="menu-grid"></div>
 </div>
 
 <style>
-    .card-hover {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid #eee;
+    .menu-card {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        border: 1px solid #f0f0f0;
+        overflow: hidden;
     }
-    
-    .card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+
+    .menu-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .menu-card img {
+        height: 210px;
+        object-fit: cover;
+    }
+
+    .menu-badge {
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .menu-filter.active {
+        background-color: #0d6efd;
+        color: #fff;
     }
 </style>
 
 <script>
-    // Add to cart functionality
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const card = this.closest('.card');
-            const title = card.querySelector('.card-title').textContent;
-            
-            // Animation
-            this.innerHTML = '<i class="fas fa-check"></i>';
-            this.classList.remove('btn-success');
-            this.classList.add('btn-secondary');
-            
-            // Alert
-            alert('"' + title.trim() + '" savatga qo\'shildi!');
-            
-            // Reset after 2 seconds
-            setTimeout(() => {
-                this.innerHTML = '<i class="fas fa-cart-plus"></i>';
-                this.classList.remove('btn-secondary');
-                this.classList.add('btn-success');
-            }, 2000);
+    const menuItems = [
+        {
+            name: "Big Burger",
+            category: "burger",
+            label: "Burger",
+            description: "Mol go'shti, cheddar pishlog'i va yangi sabzavotlar bilan.",
+            price: 35000,
+            time: 15,
+            image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Cheeseburger",
+            category: "burger",
+            label: "Burger",
+            description: "Ko'p pishloqli, yumshoq bulochka va maxsus sousli burger.",
+            price: 32000,
+            time: 15,
+            image: "https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Double Burger",
+            category: "burger",
+            label: "Burger",
+            description: "Ikki qavatli kotlet bilan to'yimli va shirador tanlov.",
+            price: 42000,
+            time: 18,
+            image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Chicken Burger",
+            category: "burger",
+            label: "Burger",
+            description: "Qarsildoq tovuq filesi va sarimsoqli sous bilan.",
+            price: 33000,
+            time: 16,
+            image: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "BBQ Burger",
+            category: "burger",
+            label: "Burger",
+            description: "BBQ sous, piyoz halqalari va dudlangan ta'm uyg'unligi.",
+            price: 39000,
+            time: 18,
+            image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Pizza Margarita",
+            category: "pizza",
+            label: "Pizza",
+            description: "Pomidor sousi, mozzarella va klassik italyan ta'mi.",
+            price: 55000,
+            time: 25,
+            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Pizza Pepperoni",
+            category: "pizza",
+            label: "Pizza",
+            description: "Pepperoni kolbasa va erigan pishloq bilan mashhur pizza.",
+            price: 65000,
+            time: 25,
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Pizza Go'shtli",
+            category: "pizza",
+            label: "Pizza",
+            description: "Go'shtli toppinglar va pishloqqa boy mazali pizza.",
+            price: 69000,
+            time: 27,
+            image: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Pizza Veggie",
+            category: "pizza",
+            label: "Pizza",
+            description: "Qo'ziqorin, qalampir, zaytun va yangi sabzavotlar bilan.",
+            price: 58000,
+            time: 24,
+            image: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Tovuq Lavash",
+            category: "lavash",
+            label: "Lavash",
+            description: "Tovuq go'shti, kartoshka fri va maxsus sousga boy lavash.",
+            price: 30000,
+            time: 12,
+            image: "https://images.unsplash.com/photo-1643131027890-14db1f89c094?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Mol Go'shtli Lavash",
+            category: "lavash",
+            label: "Lavash",
+            description: "Mol go'shti, karam va mayin lavash nonida o'ralgan.",
+            price: 34000,
+            time: 14,
+            image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Mini Lavash",
+            category: "lavash",
+            label: "Lavash",
+            description: "Yengil tamaddi uchun ixcham va mazali mini variant.",
+            price: 22000,
+            time: 10,
+            image: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Coca-Cola",
+            category: "drink",
+            label: "Ichimlik",
+            description: "0.5L sovutilgan Coca-Cola.",
+            price: 12000,
+            time: 5,
+            image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Fanta",
+            category: "drink",
+            label: "Ichimlik",
+            description: "Apelsin ta'mli gazli ichimlik, muzdek holda.",
+            price: 12000,
+            time: 5,
+            image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Moxito",
+            category: "drink",
+            label: "Ichimlik",
+            description: "Limon va yalpizli tetiklantiruvchi ichimlik.",
+            price: 18000,
+            time: 7,
+            image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Qulupnayli Milkshake",
+            category: "drink",
+            label: "Ichimlik",
+            description: "Qalin, shirin va muzdek qulupnayli kokteyl.",
+            price: 22000,
+            time: 8,
+            image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Ice Cream",
+            category: "dessert",
+            label: "Shirinlik",
+            description: "Vanil, shokolad va qulupnay ta'mli muzqaymoq.",
+            price: 15000,
+            time: 5,
+            image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Choco Donut",
+            category: "dessert",
+            label: "Shirinlik",
+            description: "Shokolad glazurli yumshoq va shirin donut.",
+            price: 14000,
+            time: 6,
+            image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+            name: "Cheesecake",
+            category: "dessert",
+            label: "Shirinlik",
+            description: "Kremli tekstura va mayin ta'mga ega cheesecake.",
+            price: 24000,
+            time: 7,
+            image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=900&q=80"
+        }
+    ];
+
+    function renderMenu(category = 'all') {
+        const grid = document.getElementById('menu-grid');
+        const filtered = category === 'all'
+            ? menuItems
+            : menuItems.filter(item => item.category === category);
+
+        grid.innerHTML = filtered.map(item => `
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card menu-card h-100">
+                    <img src="${item.image}" class="card-img-top" alt="${item.name}">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">${item.name}</h5>
+                            <span class="badge bg-light text-dark menu-badge">${item.label}</span>
+                        </div>
+                        <p class="card-text text-muted flex-grow-1">${item.description}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="h5 text-primary d-block mb-1">${item.price.toLocaleString()} so'm</span>
+                                <small class="text-muted"><i class="fas fa-clock"></i> ${item.time} daqiqa</small>
+                            </div>
+                            <button class="btn btn-success btn-sm add-to-cart-btn" data-name="${item.name}">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        attachCartHandlers();
+    }
+
+    function attachCartHandlers() {
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const title = this.dataset.name;
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                this.classList.remove('btn-success');
+                this.classList.add('btn-secondary');
+                alert('"' + title + '" savatga qo\'shildi!');
+
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-cart-plus"></i>';
+                    this.classList.remove('btn-secondary');
+                    this.classList.add('btn-success');
+                }, 2000);
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        renderMenu();
+
+        document.querySelectorAll('.menu-filter').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.menu-filter').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                renderMenu(this.dataset.category);
+            });
         });
     });
 </script>

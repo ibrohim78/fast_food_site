@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-your-secret-key-change-this-in-production'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 
 # ♻️ CART SESSION ID QO'SHILDI
 CART_SESSION_ID = 'cart'
@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     
     'restaurant',
@@ -86,7 +87,7 @@ TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -98,5 +99,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # website/settings.py - oxiriga qo'shing
 
 # Telegram bot sozlamalari
-TELEGRAM_BOT_TOKEN = '8215513833:AAGXGZj4qe6gIUT6KpWbKfjN6JIqqAYyYaw'  # BotFather dan oling
-TELEGRAM_ADMIN_ID = '7750527012'
+TELEGRAM_BOT_TOKEN = '8215513833:AAG8cVBULt0zCiyLUZuhXHYBK3x1TLcwsN8'  # Ishlaydigan tokenni yozing
+TELEGRAM_ADMIN_ID = '7750527012'  # Chat ID to'g'riligini tekshiring

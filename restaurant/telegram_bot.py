@@ -3,6 +3,7 @@
 import requests
 import logging
 from django.conf import settings
+from django.utils.html import strip_tags
 
 logger = logging.getLogger(__name__)
 
@@ -10,8 +11,8 @@ def send_telegram_message(message_text):
     """Telegramga xabar yuborish"""
     try:
         # Bot tokenini settings dan olish
-        bot_token = getattr(settings, '8215513833:AAGXGZj4qe6gIUT6KpWbKfjN6JIqqAYyYaw', '')
-        admin_id = getattr(settings, '7750527012', '')
+        bot_token = getattr(settings, 'TELEGRAM_BOT_TOKEN', '')
+        admin_id = getattr(settings, 'TELEGRAM_ADMIN_ID', '')
         
         # Agar token sozlanmagan bo'lsa, terminalga chiqaramiz
         if not bot_token or bot_token == 'YOUR_BOT_TOKEN_HERE':
@@ -52,8 +53,8 @@ def send_order_notification(order):
     try:
         message = f"""
 <b>🛒 YANGI BUYURTMA #{order.id}</b>
-
-👤 <b>Mijoz:</b> {order.customer_name}
+<pre>------------------------</pre>
+👤 <b>Mijoz:</b> {strip_tags(order.customer_name)}
 📞 <b>Telefon:</b> {order.phone}
 📍 <b>Manzil:</b> {order.address or 'Restoranda'}
 🪑 <b>Stol:</b> {f'Stol {order.table.number}' if order.table else "Yo'q"}
@@ -69,10 +70,12 @@ def send_order_notification(order):
 """
         
         # OrderItem lar mavjud bo'lsa
-        if hasattr(order, 'orderitem_set'):
-            items = order.orderitem_set.all()
+        items = order.orderitem_set.all()
+        if items:
             for item in items:
-                message += f"  • {item.product.name} x{item.quantity}\n"
+                message += f"• {strip_tags(item.product.name)} x{item.quantity}\n"
+        else:
+            message += "<i>Mahsulotlar yuklanmadi</i>\n"
         
         message += f"\n🆔 <b>Buyurtma ID:</b> {order.id}"
         
@@ -89,8 +92,8 @@ def send_reservation_notification(reservation):
     try:
         message = f"""
 <b>📅 YANGI BRON #{reservation.id}</b>
-
-👤 <b>Mijoz:</b> {reservation.customer_name}
+<pre>------------------------</pre>
+👤 <b>Mijoz:</b> {strip_tags(reservation.customer_name)}
 📞 <b>Telefon:</b> {reservation.phone}
 📧 <b>Email:</b> {reservation.email or "Yo'q"}
 

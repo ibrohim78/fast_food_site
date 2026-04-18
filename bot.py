@@ -14,7 +14,7 @@ django.setup()
 from restaurant.models import Order, Reservation
 
 # Telegram bot token
-TELEGRAM_TOKEN = '8215513833:AAGXGZj4qe6gIUT6KpWbKfjN6JIqqAYyYaw'  # BotFather dan oling
+TELEGRAM_TOKEN = '8215513833:AAG8cVBULt0zCiyLUZuhXHYBK3x1TLcwsN8'  # BotFather dan oling
 ADMIN_CHAT_ID = '7750527012'  # Admin telegram ID
 
 # Botni ishga tushirish
