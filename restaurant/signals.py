@@ -9,18 +9,16 @@ from django.db import transaction
 def order_created_handler(sender, instance, created, **kwargs):
     """Yangi buyurtma yaratilganda"""
     if created:
-        # OrderItemlar bazaga yozilishini kutish va keyin yuborish
-        transaction.on_commit(lambda: threading.Thread(
-            target=send_order_notification,
-            args=(instance,)
-        ).start())
+        # OrderItemlar bazaga yozilishi uchun biroz kutib, keyin yuborish
+        def send():
+            threading.Thread(target=send_order_notification, args=(instance,)).start()
+        transaction.on_commit(send)
 
 @receiver(post_save, sender=Reservation)
 def reservation_created_handler(sender, instance, created, **kwargs):
     """Yangi bron yaratilganda"""
     if created:  # Faqat yangi yaratilgan bronlar uchun
         # Ma'lumotlar saqlangach, Telegramga yuborish
-        transaction.on_commit(lambda: threading.Thread(
-            target=send_reservation_notification,
-            args=(instance,)
-        ).start())
+        def send():
+            threading.Thread(target=send_reservation_notification, args=(instance,)).start()
+        transaction.on_commit(send)
