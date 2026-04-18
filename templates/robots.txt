@@ -5,4 +5,4 @@ Disallow: /cart/
 Disallow: /order/success/
 Disallow: /reservation/success/
 
-Sitemap: https://yourusername.pythonanywhere.com/sitemap.xml
+Sitemap: https://fastfooduz.pythonanywhere.com/sitemap.xml

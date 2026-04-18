@@ -8,6 +8,8 @@
     <meta name="description" content="{% block meta_description %}Fast Food Restorani Toshkentda burger, pizza va boshqa mazali taomlarni tezkor yetkazib berish xizmati bilan taqdim etadi.{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}fast food, burger, pizza, restoran, yetkazib berish, Toshkent, buyurtma{% endblock %}">
     <meta name="robots" content="index, follow, max-image-preview:large">
+    {% block google_verification %}{% endblock %}
+    {% block google_verification %}<meta name="google-site-verification" content="google4f0ffe6fbf634ae9" />{% endblock %}
     <meta name="author" content="Fast Food Restorani">
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
@@ -65,7 +67,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'main.js' %}"></script>
-    <script src="{% static 'animatiosn.js' %}"></script>
+    <script src="{% static 'animations.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
